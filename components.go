@@ -27,6 +27,9 @@ const (
 	ContainerComponent             ComponentType = 17
 	LabelComponent                 ComponentType = 18
 	FileUploadComponent            ComponentType = 19
+
+	RadioButtonComponent 		   ComponentType = 21
+	CheckBoxGroupComponent  	   ComponentType = 22
 )
 
 // MessageComponent is a base interface for all message components.
@@ -691,4 +694,66 @@ type ResolvedUnfurledMediaItem struct {
 	Width       int    `json:"width"`
 	Height      int    `json:"height"`
 	ContentType string `json:"content_type"`
+}
+
+
+
+type CheckBoxGroupOption struct {
+	Label string `json:"label,omitempty"`
+	Value string `json:"value"`
+	Description string `json:"description,omitempty"`
+	Default bool `json:"default,omitempty"`
+}
+
+type CheckBoxGroup struct {
+	Id int `json:"id,omitempty"`
+	CustomID string `json:"custom_id,omitempty"`
+	Options []CheckBoxGroupOption `json:"options"`
+	MinLength int `json:"min_length,omitempty"`
+	MaxLength int `json:"max_length,omitempty"`
+	Required bool `json:"required,omitempty"`
+}
+
+func (c CheckBoxGroup) Type() ComponentType{
+	return CheckBoxGroupComponent
+}
+func (c CheckBoxGroup) MarshalJSON()([]byte, error){
+	type checkBoxGroup CheckBoxGroup
+	return Marshal(struct {
+		checkBoxGroup
+		Type ComponentType `json:"type"`
+	}{
+		checkBoxGroup: checkBoxGroup(c),
+		Type: c.Type(),
+	})
+}
+
+type RadioGroupOption struct{
+	Value string `json:"value"`
+	Label string `json:"label"`
+	Description string `json:"description,omitempty"`
+	Default bool `json:"default,omitempty"`
+}
+
+type RadioGroup struct {
+	Id int `json:"id,omitempty"`
+	CustomID string `json:"custom_id"`
+	Options []RadioGroupOption `json:"options"`
+	Required bool `json:"required,omitempty"`
+}
+
+
+func (r RadioGroup) Type() ComponentType {
+	return RadioButtonComponent
+}
+
+func (r RadioGroup) MarshalJSON()([]byte, error){
+	type radioGroup RadioGroup
+	return Marshal(struct{
+		radioGroup
+		Type ComponentType `json:"type"`
+	}{
+		radioGroup: radioGroup(r),
+		Type: r.Type(),
+	})
 }
