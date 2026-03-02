@@ -80,6 +80,10 @@ func (umc *unmarshalableMessageComponent) UnmarshalJSON(src []byte) error {
 		umc.MessageComponent = &Label{}
 	case FileUploadComponent:
 		umc.MessageComponent = &FileUpload{}
+	case CheckBoxGroupComponent:
+		umc.MessageComponent = &CheckBoxGroup{}
+	case RadioButtonComponent:
+		umc.MessageComponent = &RadioGroup{}
 	default:
 		return fmt.Errorf("unknown component type: %d", v.Type)
 	}
