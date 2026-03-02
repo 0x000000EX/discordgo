@@ -716,6 +716,7 @@ type CheckBoxGroup struct {
 	MinLength int `json:"min_length,omitempty"`
 	MaxLength int `json:"max_length,omitempty"`
 	Required bool `json:"required,omitempty"`
+	Values []string `json:"values,omitempty"`
 }
 
 func (c CheckBoxGroup) Type() ComponentType{
@@ -744,6 +745,7 @@ type RadioGroup struct {
 	CustomID string `json:"custom_id"`
 	Options []RadioGroupOption `json:"options"`
 	Required bool `json:"required,omitempty"`
+	Value string `json:"value,omitempty"`
 }
 
 
