@@ -30,6 +30,7 @@ const (
 
 	RadioButtonComponent 		   ComponentType = 21
 	CheckBoxGroupComponent  	   ComponentType = 22
+	CheckBoxComponent 			   ComponentType = 23
 )
 
 // MessageComponent is a base interface for all message components.
@@ -84,6 +85,8 @@ func (umc *unmarshalableMessageComponent) UnmarshalJSON(src []byte) error {
 		umc.MessageComponent = &CheckBoxGroup{}
 	case RadioButtonComponent:
 		umc.MessageComponent = &RadioGroup{}
+	case CheckBoxComponent:
+		umc.MessageComponent = &CheckBoxGroup{};
 	default:
 		return fmt.Errorf("unknown component type: %d", v.Type)
 	}
@@ -700,39 +703,6 @@ type ResolvedUnfurledMediaItem struct {
 	ContentType string `json:"content_type"`
 }
 
-
-
-type CheckBoxGroupOption struct {
-	Label string `json:"label,omitempty"`
-	Value string `json:"value"`
-	Description string `json:"description,omitempty"`
-	Default bool `json:"default,omitempty"`
-}
-
-type CheckBoxGroup struct {
-	Id int `json:"id,omitempty"`
-	CustomID string `json:"custom_id,omitempty"`
-	Options []CheckBoxGroupOption `json:"options"`
-	MinLength int `json:"min_length,omitempty"`
-	MaxLength int `json:"max_length,omitempty"`
-	Required bool `json:"required,omitempty"`
-	Values []string `json:"values,omitempty"`
-}
-
-func (c CheckBoxGroup) Type() ComponentType{
-	return CheckBoxGroupComponent
-}
-func (c CheckBoxGroup) MarshalJSON()([]byte, error){
-	type checkBoxGroup CheckBoxGroup
-	return Marshal(struct {
-		checkBoxGroup
-		Type ComponentType `json:"type"`
-	}{
-		checkBoxGroup: checkBoxGroup(c),
-		Type: c.Type(),
-	})
-}
-
 type RadioGroupOption struct{
 	Value string `json:"value"`
 	Label string `json:"label"`
@@ -741,7 +711,7 @@ type RadioGroupOption struct{
 }
 
 type RadioGroup struct {
-	Id int `json:"id,omitempty"`
+	ID int `json:"id,omitempty"`
 	CustomID string `json:"custom_id"`
 	Options []RadioGroupOption `json:"options"`
 	Required bool `json:"required,omitempty"`
@@ -761,5 +731,60 @@ func (r RadioGroup) MarshalJSON()([]byte, error){
 	}{
 		radioGroup: radioGroup(r),
 		Type: r.Type(),
+	})
+}
+
+
+type CheckBoxGroupOption struct {
+	Label string `json:"label,omitempty"`
+	Value string `json:"value"`
+	Description string `json:"description,omitempty"`
+	Default bool `json:"default,omitempty"`
+}
+
+type CheckBoxGroup struct {
+	ID int `json:"id,omitempty"`
+	CustomID string `json:"custom_id,omitempty"`
+	Options []CheckBoxGroupOption `json:"options"`
+	MinValues int `json:"min_value,omitempty"`
+	MaxValues int `json:"max_value,omitempty"`
+	Required bool `json:"required,omitempty"`
+	Values []string `json:"values,omitempty"`
+}
+
+func (c CheckBoxGroup) Type() ComponentType{
+	return CheckBoxGroupComponent
+}
+func (c CheckBoxGroup) MarshalJSON()([]byte, error){
+	type checkBoxGroup CheckBoxGroup
+	return Marshal(struct {
+		checkBoxGroup
+		Type ComponentType `json:"type"`
+	}{
+		checkBoxGroup: checkBoxGroup(c),
+		Type: c.Type(),
+	})
+}
+
+
+type CheckBox struct {
+	ID int `json:"id,omitempty"`
+	CustomID string `json:"custom_id"`
+	Default bool `json:"default:omitempty"`
+	Value bool `json:"value"`
+}
+
+func (c CheckBox) Type() ComponentType {
+	return CheckBoxComponent
+}
+
+func (c CheckBox) MarshalJSON()([]byte, error){
+	type checkBox CheckBox
+	return Marshal(struct {
+		checkBox
+		Type ComponentType `json:"type"`
+	}{
+		checkBox: checkBox(c),
+		Type: c.Type(),
 	})
 }
