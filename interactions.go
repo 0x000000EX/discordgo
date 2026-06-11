@@ -569,6 +569,11 @@ func (o ApplicationCommandInteractionDataOption) UserValue(s *Session) *User {
 	return u
 }
 
+// AttachmentValue is a utility function for casting option value to attachment.
+func (o ApplicationCommandInteractionDataOption) AttachmentValue() {
+	
+}
+
 // InteractionResponseType is type of interaction response.
 type InteractionResponseType uint8
 
