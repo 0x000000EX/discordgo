@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
 )
 
 // InteractionDeadline is the time allowed to respond to an interaction.
@@ -570,8 +571,16 @@ func (o ApplicationCommandInteractionDataOption) UserValue(s *Session) *User {
 }
 
 // AttachmentValue is a utility function for casting option value to attachment.
-func (o ApplicationCommandInteractionDataOption) AttachmentValue() {
-	
+func (o ApplicationCommandInteractionDataOption) AttachmentValue (d *ApplicationCommandInteractionData) *MessageAttachment {
+	if o.Type != ApplicationCommandOptionAttachment{
+		panic("AttachmentValue called on data option of type " + o.Type.String())
+	}
+	attachmentid := o.Value.(string)
+	attachment, ok := d.Resolved.Attachments[attachmentid]
+	if !ok {
+		return nil
+	}
+	return attachment
 }
 
 // InteractionResponseType is type of interaction response.

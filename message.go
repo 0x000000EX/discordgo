@@ -352,18 +352,24 @@ type MessageAllowedMentions struct {
 
 // A MessageAttachment stores data for message attachments.
 type MessageAttachment struct {
-	ID           string                 `json:"id"`
-	URL          string                 `json:"url"`
-	ProxyURL     string                 `json:"proxy_url"`
-	Filename     string                 `json:"filename"`
-	ContentType  string                 `json:"content_type"`
-	Width        int                    `json:"width"`
-	Height       int                    `json:"height"`
-	Size         int                    `json:"size"`
-	Ephemeral    bool                   `json:"ephemeral"`
-	DurationSecs float64                `json:"duration_secs"`
-	Waveform     string                 `json:"waveform"`
-	Flags        MessageAttachmentFlags `json:"flags"`
+	ID           	 string                 `json:"id"`
+	Filename     	 string                 `json:"filename"`
+	Title        	 string                 `json:"title,omitempty"`
+	Description  	 string                 `json:"Description,omitempty"`
+	ContentType  	 string                 `json:"content_type"`
+	Size         	 int                    `json:"size"`
+	URL          	 string                 `json:"url"`
+	ProxyURL     	 string                 `json:"proxy_url"`
+	Height       	 int                    `json:"height,omitempty"`
+	Width        	 int                    `json:"width,omitempty"`
+	Placeholder  	 string                 `json:"placeholder,omitempty"`
+	Ephemeral    	 bool                   `json:"ephemeral"`
+	DurationSecs 	 float64                `json:"duration_secs"`
+	Waveform     	 string                 `json:"waveform"`
+	Flags        	 MessageAttachmentFlags `json:"flags"`
+	ClipParticipants []*User                `json:"clip_participants,omitempty"`
+	ClipCreatedAt    TimeStamps             `json:"clip_created_at,omitempty"`
+	Application      Application            `json:"application,omitempty"`
 }
 
 // MessageAttachmentFlags is the flags of a message attachment.
