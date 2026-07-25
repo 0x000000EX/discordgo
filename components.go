@@ -28,7 +28,7 @@ const (
 	LabelComponent                 ComponentType = 18
 	FileUploadComponent            ComponentType = 19
 
-	RadioButtonComponent 		   ComponentType = 21
+	RadioGroupComponent 		   ComponentType = 21
 	CheckBoxGroupComponent  	   ComponentType = 22
 	CheckBoxComponent 			   ComponentType = 23
 )
@@ -83,7 +83,7 @@ func (umc *unmarshalableMessageComponent) UnmarshalJSON(src []byte) error {
 		umc.MessageComponent = &FileUpload{}
 	case CheckBoxGroupComponent:
 		umc.MessageComponent = &CheckBoxGroup{}
-	case RadioButtonComponent:
+	case RadioGroupComponent:
 		umc.MessageComponent = &RadioGroup{}
 	case CheckBoxComponent:
 		umc.MessageComponent = &CheckBoxGroup{};
@@ -715,12 +715,12 @@ type RadioGroup struct {
 	CustomID string `json:"custom_id"`
 	Options []RadioGroupOption `json:"options"`
 	Required bool `json:"required,omitempty"`
-	Value string `json:"value,omitempty"`
+	Value string `json:"-"`
 }
 
 
 func (r RadioGroup) Type() ComponentType {
-	return RadioButtonComponent
+	return RadioGroupComponent
 }
 
 func (r RadioGroup) MarshalJSON()([]byte, error){
@@ -746,9 +746,9 @@ type CheckBoxGroup struct {
 	ID int `json:"id,omitempty"`
 	CustomID string `json:"custom_id,omitempty"`
 	Options []CheckBoxGroupOption `json:"options"`
-	MinValues int `json:"min_value,omitempty"`
-	MaxValues int `json:"max_value,omitempty"`
-	Required bool `json:"required,omitempty"`
+	MinValues int `json:"min_values,omitempty"`
+	MaxValues int `json:"max_values,omitempty"`
+	Required bool `json:"required"`
 	Values []string `json:"values,omitempty"`
 }
 
@@ -770,7 +770,7 @@ func (c CheckBoxGroup) MarshalJSON()([]byte, error){
 type CheckBox struct {
 	ID int `json:"id,omitempty"`
 	CustomID string `json:"custom_id"`
-	Default bool `json:"default:omitempty"`
+	Default bool `json:"default"`
 	Value bool `json:"value"`
 }
 
